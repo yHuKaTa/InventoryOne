@@ -62,6 +62,8 @@ public class ViewOrders {
                             // We can implement pay service here
                             order.changeStatus(Status.FINISHED);
                             System.out.println("Your order have been successfully finished!");
+                            inventory.updateUsers();
+                            inventory.updateHistory();
                             break;
                         }
                     }
@@ -91,6 +93,9 @@ public class ViewOrders {
                             }
                             order.changeStatus(Status.CANCELED);
                             System.out.println("Your order have been successfully canceled!");
+                            inventory.updateItems();
+                            inventory.updateUsers();
+                            inventory.updateHistory();
                             break;
                         }
                     }

@@ -82,6 +82,8 @@ public class BuyMenu {
                     }
                 }
                 user.addToCart(wished);
+                inventory.updateUsers();
+                inventory.updateHistory();
                 getItems();
             }
         }

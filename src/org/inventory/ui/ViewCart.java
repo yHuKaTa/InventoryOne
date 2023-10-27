@@ -61,6 +61,9 @@ public class ViewCart {
                         inventory.getHistory().putIfAbsent(user, new LinkedList<>());
                         inventory.getHistory().get(user).add(user.getOrders().getLast());
                     }
+                    inventory.updateItems();
+                    inventory.updateUsers();
+                    inventory.updateHistory();
                     MainMenu.getMain();
                     break;
                 }
@@ -70,6 +73,8 @@ public class ViewCart {
                     if (user.removeFromCart(id)) {
                         System.out.println("Successfully removed item from cart!");
                     }
+                    inventory.updateUsers();
+                    inventory.updateHistory();
                     getCart();
                     break;
                 }
@@ -81,6 +86,8 @@ public class ViewCart {
                     if (user.reduceQuantity(id, quantity)) {
                         System.out.println("Successfully changed quantity!");
                     }
+                    inventory.updateUsers();
+                    inventory.updateHistory();
                     getCart();
                     break;
                 }

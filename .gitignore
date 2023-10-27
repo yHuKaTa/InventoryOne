@@ -36,3 +36,4 @@ bin/
 /.idea/modules.xml
 /.idea/libraries/springframework_security_spring_web.xml
 /.idea/uiDesigner.xml
+/.idea/vcs.xml

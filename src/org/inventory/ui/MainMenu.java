@@ -111,7 +111,7 @@ public class MainMenu {
                     break;
                 }
                 case 4: {
-
+                    ModifyProfile.getModifyProfileMenu(user);
                     break;
                 }
                 case 5: {
@@ -147,7 +147,7 @@ public class MainMenu {
                     break;
                 }
                 case 4: {
-
+                    ModifyProfile.getModifyProfileMenu(user);
                     break;
                 }
                 case 5: {

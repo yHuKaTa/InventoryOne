@@ -31,6 +31,7 @@ public class ViewOrders {
         } else {
             orders.setUser(user);
         }
+        orders.getOrders();
     }
 
     private void getOrders() {

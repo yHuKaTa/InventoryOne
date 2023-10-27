@@ -27,3 +27,12 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+/.idea/.gitignore
+/.idea/checkstyle-idea.xml
+/.idea/libraries/fasterxml_jackson_core_databind.xml
+/Inventory.iml
+/.idea/jpa-buddy.xml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/libraries/springframework_security_spring_web.xml
+/.idea/uiDesigner.xml

@@ -1,7 +1,5 @@
 package org.inventory.models.items;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.inventory.models.items.appearances.Categorizable;
@@ -22,7 +20,7 @@ import java.util.Random;
 })
 public abstract class Item implements Sellable, Categorizable {
     private final long id;
-    private String category;
+    private final String category;
     private String name;
     private float price;
     private float quantity;
@@ -44,8 +42,7 @@ public abstract class Item implements Sellable, Categorizable {
         this.quantity = quantity;
     }
 
-    @JsonCreator
-    public Item(@JsonProperty("id") long id, @JsonProperty("category") String category, @JsonProperty("name") String name, @JsonProperty("price") float price, @JsonProperty("quantity") float quantity) {
+    public Item(long id, String category, String name, float price, float quantity) {
         this.id = id;
         this.category = category;
         this.name = name;
@@ -53,12 +50,10 @@ public abstract class Item implements Sellable, Categorizable {
         this.quantity = quantity;
     }
 
-    @JsonProperty("id")
     public long getId() {
         return id;
     }
 
-    @JsonProperty("name")
     public String getName() {
         return name;
     }
@@ -67,7 +62,6 @@ public abstract class Item implements Sellable, Categorizable {
         this.name = name;
     }
 
-    @JsonProperty("quantity")
     public float getQuantity() {
         return quantity;
     }
@@ -77,7 +71,6 @@ public abstract class Item implements Sellable, Categorizable {
     }
 
     @Override
-    @JsonProperty("category")
     public String getCategory() {
         return this.category;
     }
@@ -88,7 +81,6 @@ public abstract class Item implements Sellable, Categorizable {
     }
 
     @Override
-    @JsonProperty("price")
     public float getPrice() {
         return price;
     }

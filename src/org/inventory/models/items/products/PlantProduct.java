@@ -2,12 +2,14 @@ package org.inventory.models.items.products;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.inventory.models.items.Item;
 import org.inventory.models.items.appearances.Discountable;
 import org.inventory.models.items.appearances.Perishable;
 
 import java.time.LocalDate;
 
+@JsonTypeName("Plant Product")
 public class PlantProduct extends Item implements Perishable, Discountable {
     private LocalDate dateOfExpiration;
     private float discount;
@@ -20,21 +22,20 @@ public class PlantProduct extends Item implements Perishable, Discountable {
     public PlantProduct(String name, float price, float quantity, LocalDate dateOfExpiration) {
         super("Plant Product", name, price, quantity);
         this.dateOfExpiration = dateOfExpiration;
+        this.discount = 0.0f;
     }
 
     @JsonCreator
-    public PlantProduct(@JsonProperty("id") long id, @JsonProperty("category") String category, @JsonProperty("name") String name, @JsonProperty("price") float price, @JsonProperty("quantity") float quantity, @JsonProperty("dateOfExpiration") LocalDate dateOfExpiration, @JsonProperty("discount") float discount) {
-        super(id, category, name, price, quantity);
+    public PlantProduct(@JsonProperty("id") long id, @JsonProperty("name") String name, @JsonProperty("price") float price, @JsonProperty("quantity") float quantity, @JsonProperty("dateOfExpiration") LocalDate dateOfExpiration, @JsonProperty("discount") float discount) {
+        super(id, "Plant Product", name, price, quantity);
         this.dateOfExpiration = dateOfExpiration;
         this.discount = discount;
     }
 
-    @JsonProperty("dateOfExpiration")
     public LocalDate getDateOfExpiration() {
         return dateOfExpiration;
     }
 
-    @JsonProperty("discount")
     public float getDiscount() {
         return discount;
     }

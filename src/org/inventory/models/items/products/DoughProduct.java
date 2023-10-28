@@ -2,6 +2,7 @@ package org.inventory.models.items.products;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.inventory.models.items.Item;
 import org.inventory.models.items.Promotion;
 import org.inventory.models.items.appearances.Perishable;
@@ -11,9 +12,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonTypeName("Dough Product")
 public class DoughProduct extends Item implements Perishable, Promotable {
     private LocalDate dateOfExpiration;
-    private List<Promotion> promotions;
+    private final List<Promotion> promotions;
 
     public DoughProduct(DoughProduct otherDough) {
         super(otherDough);
@@ -27,18 +29,16 @@ public class DoughProduct extends Item implements Perishable, Promotable {
     }
 
     @JsonCreator
-    public DoughProduct(@JsonProperty("id") long id, @JsonProperty("category") String category, @JsonProperty("name") String name, @JsonProperty("price") float price, @JsonProperty("quantity") float quantity, @JsonProperty("dateOfExpiration") LocalDate dateOfExpiration, @JsonProperty("promotions") List<Promotion> promotions) {
-        super(id, category, name, price, quantity);
+    public DoughProduct(@JsonProperty("id") long id, @JsonProperty("name") String name, @JsonProperty("price") float price, @JsonProperty("quantity") float quantity, @JsonProperty("dateOfExpiration") LocalDate dateOfExpiration, @JsonProperty("promotions") List<Promotion> promotions) {
+        super(id, "Dough Product", name, price, quantity);
         this.dateOfExpiration = dateOfExpiration;
         this.promotions = promotions;
     }
 
-    @JsonProperty("dateOfExpiration")
     public LocalDate getDateOfExpiration() {
         return dateOfExpiration;
     }
 
-    @JsonProperty("promotions")
     public List<Promotion> getPromotions() {
         return promotions;
     }

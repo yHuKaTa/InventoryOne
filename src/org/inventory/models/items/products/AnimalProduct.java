@@ -1,7 +1,8 @@
 package org.inventory.models.items.products;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.inventory.models.items.Item;
 import org.inventory.models.items.Promotion;
 import org.inventory.models.items.appearances.Discountable;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonTypeName("Animal Product")
 public class AnimalProduct extends Item implements Discountable, Promotable, Perishable {
     private float discount = 0.0f;
     private LocalDate dateOfExpiration;
@@ -30,24 +32,22 @@ public class AnimalProduct extends Item implements Discountable, Promotable, Per
         this.promotions = new ArrayList<>();
     }
 
-    public AnimalProduct(@JsonProperty("id") long id, @JsonProperty("category") String category, @JsonProperty("name") String name, @JsonProperty("price") float price, @JsonProperty("quantity") float quantity, @JsonProperty("discount") float discount, @JsonProperty("dateOfExpiration") LocalDate dateOfExpiration, @JsonProperty("promotions") List<Promotion> promotions) {
-        super(id, category, name, price, quantity);
+    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+    public AnimalProduct(@JsonProperty("id") long id, @JsonProperty("name") String name, @JsonProperty("price") float price, @JsonProperty("quantity") float quantity, @JsonProperty("discount") float discount, @JsonProperty("dateOfExpiration") LocalDate dateOfExpiration, @JsonProperty("promotions") List<Promotion> promotions) {
+        super(id, "Animal Product", name, price, quantity);
         this.discount = discount;
         this.dateOfExpiration = dateOfExpiration;
         this.promotions = promotions;
     }
 
-    @JsonProperty("discount")
     public float getDiscount() {
         return discount;
     }
 
-    @JsonProperty("dateOfExpiration")
     public LocalDate getDateOfExpiration() {
         return dateOfExpiration;
     }
 
-    @JsonProperty("promotions")
     public List<Promotion> getPromotions() {
         return promotions;
     }

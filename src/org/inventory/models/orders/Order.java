@@ -1,6 +1,7 @@
 package org.inventory.models.orders;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.inventory.models.items.Item;
 
@@ -41,6 +42,7 @@ public class Order {
         return status;
     }
 
+    @JsonIgnore
     public float getTotalPrice() {
         float total = 0.0f;
         for (Item item : items) {

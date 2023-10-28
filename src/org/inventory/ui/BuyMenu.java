@@ -75,8 +75,13 @@ public class BuyMenu {
                                     System.out.printf("Insufficient quantity! Maximum quantity is %f\n", item.getQuantity());
                                     qty = (float) read.readDouble();
                                 }
-                                wished.setQuantity(qty);
-                                break;
+                                if (item.getQuantity() <= 0) {
+                                    getItems();
+                                    return;
+                                } else {
+                                    wished.setQuantity(qty);
+                                    break;
+                                }
                             } else if (item.getId() == Long.parseLong(wish) && Objects.nonNull(cartItem)) {
                                 System.out.println("Insert quantity:");
                                 float qty = (float) read.readDouble();

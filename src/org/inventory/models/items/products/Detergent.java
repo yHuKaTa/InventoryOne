@@ -2,15 +2,18 @@ package org.inventory.models.items.products;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.inventory.models.items.Item;
 import org.inventory.models.items.Promotion;
 import org.inventory.models.items.appearances.Breakable;
 import org.inventory.models.items.appearances.Promotable;
 
+import java.util.ArrayList;
 import java.util.List;
 
+@JsonTypeName("Detergent")
 public class Detergent extends Item implements Breakable, Promotable {
-    private List<Promotion> promotions;
+    private final List<Promotion> promotions;
 
     public Detergent(Detergent otherDetergent) {
         super(otherDetergent);
@@ -19,15 +22,15 @@ public class Detergent extends Item implements Breakable, Promotable {
 
     public Detergent(String name, float price, float quantity) {
         super("Detergent", name, price, quantity);
+        this.promotions = new ArrayList<>();
     }
 
     @JsonCreator
-    public Detergent(@JsonProperty("id") long id, @JsonProperty("category") String category, @JsonProperty("name") String name, @JsonProperty("price") float price, @JsonProperty("quantity") float quantity, @JsonProperty("promotions") List<Promotion> promotions) {
-        super(id, category, name, price, quantity);
+    public Detergent(@JsonProperty("id") long id, @JsonProperty("name") String name, @JsonProperty("price") float price, @JsonProperty("quantity") float quantity, @JsonProperty("promotions") List<Promotion> promotions) {
+        super(id, "Detergent", name, price, quantity);
         this.promotions = promotions;
     }
 
-    @JsonProperty("promotions")
     public List<Promotion> getPromotions() {
         return promotions;
     }

@@ -40,7 +40,6 @@ public class ModifyProfile {
             case 1: {
                 if (user.changePassword()) {
                     inventory.updateUsers();
-                    inventory.updateHistory();
                 }
                 getMenu();
                 break;
@@ -48,7 +47,6 @@ public class ModifyProfile {
             case 2: {
                 user.changePhoneNumber();
                 inventory.updateUsers();
-                inventory.updateHistory();
                 getMenu();
                 break;
             }

@@ -14,11 +14,11 @@ public class InventoryOne {
     private static InventoryOne inventory;
     private final List<Item> items;
     private final List<User> users;
-    private final Map<User, List<Order>> history;
+    private final Map<String, List<Order>> history;
 
     private final Serializer<List<Item>> itemSerializer = new Serializer<>();
     private final Serializer<List<User>> userSerializer = new Serializer<>();
-    private final Serializer<Map<User, List<Order>>> historySerializer = new Serializer<>();
+    private final Serializer<Map<String, List<Order>>> historySerializer = new Serializer<>();
     private InventoryOne() {
         items = importItems();
         users = importUsers();
@@ -40,7 +40,7 @@ public class InventoryOne {
         return users;
     }
 
-    public Map<User, List<Order>> getHistory() {
+    public Map<String, List<Order>> getHistory() {
         return history;
     }
 
@@ -64,9 +64,9 @@ public class InventoryOne {
         return temp;
     }
 
-    private Map<User, List<Order>> importHistory() {
-        TypeReference<Map<User, List<Order>>> typeReference = new TypeReference<>() {};
-        Map<User, List<Order>> temp = historySerializer.readFromJsonFile("src/org/inventory/data/history.json", typeReference);
+    private Map<String, List<Order>> importHistory() {
+        TypeReference<Map<String, List<Order>>> typeReference = new TypeReference<>() {};
+        Map<String, List<Order>> temp = historySerializer.readFromJsonFile("src/org/inventory/data/history.json", typeReference);
         if (Objects.isNull(temp)) {
             temp = new LinkedHashMap<>();
         }

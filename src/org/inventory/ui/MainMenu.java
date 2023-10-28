@@ -122,7 +122,7 @@ public class MainMenu {
                     break;
                 }
                 case 5: {
-
+                    ViewItemsList.getViewItemsList(user);
                     break;
                 }
                 case 6: {

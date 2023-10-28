@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public class BuyMenu {
     private static BuyMenu buyMenu;
-    private InventoryOne inventory;
+    private final InventoryOne inventory;
     private User user;
     private final ReadFromConsole read;
 
@@ -68,7 +68,6 @@ public class BuyMenu {
                             }
                             wished = item;
                             wished.setQuantity(qty);
-//                            item.setQuantity(item.getQuantity() - qty);
                             break;
                         }
                     }
@@ -83,7 +82,6 @@ public class BuyMenu {
                 }
                 user.addToCart(wished);
                 inventory.updateUsers();
-                inventory.updateHistory();
                 getItems();
             }
         }

@@ -21,7 +21,7 @@ import java.util.Random;
         @JsonSubTypes.Type(value = AnimalProduct.class, name = "Animal Product")
 })
 public abstract class Item implements Sellable, Categorizable {
-    private long id;
+    private final long id;
     private String category;
     private String name;
     private float price;
@@ -55,6 +55,10 @@ public abstract class Item implements Sellable, Categorizable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @JsonProperty("quantity")
     public float getQuantity() {
         return quantity;
@@ -62,19 +66,6 @@ public abstract class Item implements Sellable, Categorizable {
 
     public void setQuantity(float quantity) {
         this.quantity = quantity;
-    }
-
-    public void sell(float quantity) {
-        if (this.quantity > quantity) {
-            this.quantity =- quantity;
-        } else {
-            System.out.println("Insufficient quantity!");
-        }
-    }
-
-    @Override
-    public void setCategory(String category) {
-        this.category = category;
     }
 
     @Override

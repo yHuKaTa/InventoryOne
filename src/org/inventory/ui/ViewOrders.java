@@ -61,6 +61,12 @@ public class ViewOrders {
                                 break;
                             }
                             // We can implement pay service here
+                            for (Order history : inventory.getHistory().get(user.getUuid())) {
+                                if (history.getId().equals(order.getId())) {
+                                    history.changeStatus(Status.FINISHED);
+                                    break;
+                                }
+                            }
                             order.changeStatus(Status.FINISHED);
                             System.out.println("Your order have been successfully finished!");
                             inventory.updateUsers();
@@ -90,6 +96,12 @@ public class ViewOrders {
                                     if (item.getId() == orderedItem.getId()) {
                                         item.setQuantity(item.getQuantity() + orderedItem.getQuantity());
                                     }
+                                }
+                            }
+                            for (Order history : inventory.getHistory().get(user.getUuid())) {
+                                if (history.getId().equals(order.getId())) {
+                                    history.changeStatus(Status.CANCELED);
+                                    break;
                                 }
                             }
                             order.changeStatus(Status.CANCELED);

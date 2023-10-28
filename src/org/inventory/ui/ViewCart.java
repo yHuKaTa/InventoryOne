@@ -9,7 +9,7 @@ import java.util.*;
 
 public class ViewCart {
     private static ViewCart cartMenu;
-    private InventoryOne inventory;
+    private final InventoryOne inventory;
     private User user;
     private final ReadFromConsole read;
 
@@ -17,7 +17,6 @@ public class ViewCart {
         this.inventory = InventoryOne.getInventory();
         this.read = ReadFromConsole.getInstance();
         this.user = user;
-
     }
 
     private void setUser(User user) {
@@ -55,11 +54,11 @@ public class ViewCart {
                     }
                     user.generateOrder();
                     System.out.printf("Successfully generated new order! Your order ID is %s", user.getOrders().getLast().getId());
-                    if (inventory.getHistory().containsKey(user)) {
-                        inventory.getHistory().get(user).add(user.getOrders().getLast());
+                    if (inventory.getHistory().containsKey(user.getUuid())) {
+                        inventory.getHistory().get(user.getUuid()).add(user.getOrders().getLast());
                     } else {
-                        inventory.getHistory().putIfAbsent(user, new LinkedList<>());
-                        inventory.getHistory().get(user).add(user.getOrders().getLast());
+                        inventory.getHistory().putIfAbsent(user.getUuid(), new LinkedList<>());
+                        inventory.getHistory().get(user.getUuid()).add(user.getOrders().getLast());
                     }
                     inventory.updateItems();
                     inventory.updateUsers();
@@ -74,7 +73,6 @@ public class ViewCart {
                         System.out.println("Successfully removed item from cart!");
                     }
                     inventory.updateUsers();
-                    inventory.updateHistory();
                     getCart();
                     break;
                 }
@@ -87,7 +85,6 @@ public class ViewCart {
                         System.out.println("Successfully changed quantity!");
                     }
                     inventory.updateUsers();
-                    inventory.updateHistory();
                     getCart();
                     break;
                 }

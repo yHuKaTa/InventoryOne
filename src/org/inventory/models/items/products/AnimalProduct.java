@@ -101,6 +101,7 @@ public class AnimalProduct extends Item implements Discountable, Promotable, Per
         for (Promotion promotion : promotions) {
             if (promotionName.equals(promotion.promotion())) {
                 newPrice *= promotion.discount();
+                break;
             }
         }
         return newPrice;

@@ -69,10 +69,13 @@ public class ViewItemsList {
                         float quantity = (float) read.readDouble();
                         System.out.println("Insert product date of expiration in format yyyy-mm-dd:");
                         LocalDate date = LocalDate.parse(read.readDate());
+                        while (LocalDate.now().isAfter(date)) {
+                            date = LocalDate.parse(read.readDate());
+                        }
                         inventory.getItems().add(new AnimalProduct(name, price, quantity, date));
                         inventory.updateItems();
                         MainMenu.getMain();
-                        break;
+                        return;
                     }
                     case 2: {
                         System.out.println("Insert product name:");
@@ -84,7 +87,7 @@ public class ViewItemsList {
                         inventory.getItems().add(new Detergent(name, price, quantity));
                         inventory.updateItems();
                         MainMenu.getMain();
-                        break;
+                        return;
                     }
                     case 3: {
                         System.out.println("Insert product name:");
@@ -96,7 +99,7 @@ public class ViewItemsList {
                         inventory.getItems().add(new DoughProduct(name, price, quantity));
                         inventory.updateItems();
                         MainMenu.getMain();
-                        break;
+                        return;
                     }
                     case 4: {
                         System.out.println("Insert product name:");
@@ -107,22 +110,27 @@ public class ViewItemsList {
                         float quantity = (float) read.readDouble();
                         System.out.println("Insert product date of expiration in format yyyy-mm-dd:");
                         LocalDate date = LocalDate.parse(read.readDate());
+                        while (LocalDate.now().isAfter(date)) {
+                            date = LocalDate.parse(read.readDate());
+                        }
                         inventory.getItems().add(new PlantProduct(name, price, quantity, date));
                         inventory.updateItems();
                         MainMenu.getMain();
-                        break;
+                        return;
                     }
                     default: {
                         MainMenu.getMain();
-                        break;
+                        return;
                     }
                 }
             } else {
                 MainMenu.getMain();
+                return;
             }
         } else {
             System.out.println("To add new item insert 1");
             System.out.println("To modify existing item insert 2");
+            System.out.println("To review breakage of items insert 3");
             System.out.println("To exit menu insert every other digit");
             int choice = read.readInteger();
             switch (choice) {
@@ -144,10 +152,13 @@ public class ViewItemsList {
                             float quantity = (float) read.readDouble();
                             System.out.println("Insert product date of expiration in format yyyy-mm-dd:");
                             LocalDate date = LocalDate.parse(read.readDate());
+                            while (LocalDate.now().isAfter(date)) {
+                                date = LocalDate.parse(read.readDate());
+                            }
                             inventory.getItems().add(new AnimalProduct(name, price, quantity, date));
                             inventory.updateItems();
                             MainMenu.getMain();
-                            break;
+                            return;
                         }
                         case 2: {
                             System.out.println("Insert product name:");
@@ -159,7 +170,7 @@ public class ViewItemsList {
                             inventory.getItems().add(new Detergent(name, price, quantity));
                             inventory.updateItems();
                             MainMenu.getMain();
-                            break;
+                            return;
                         }
                         case 3: {
                             System.out.println("Insert product name:");
@@ -171,7 +182,7 @@ public class ViewItemsList {
                             inventory.getItems().add(new DoughProduct(name, price, quantity));
                             inventory.updateItems();
                             MainMenu.getMain();
-                            break;
+                            return;
                         }
                         case 4: {
                             System.out.println("Insert product name:");
@@ -182,17 +193,19 @@ public class ViewItemsList {
                             float quantity = (float) read.readDouble();
                             System.out.println("Insert product date of expiration in format yyyy-mm-dd:");
                             LocalDate date = LocalDate.parse(read.readDate());
+                            while (LocalDate.now().isAfter(date)) {
+                                date = LocalDate.parse(read.readDate());
+                            }
                             inventory.getItems().add(new PlantProduct(name, price, quantity, date));
                             inventory.updateItems();
                             MainMenu.getMain();
-                            break;
+                            return;
                         }
                         default: {
                             MainMenu.getMain();
-                            break;
+                            return;
                         }
                     }
-                    break;
                 }
                 case 2: {
                     int num = 1;
@@ -206,10 +219,12 @@ public class ViewItemsList {
                         MainMenu.getMain();
                         return;
                     }
+                    boolean isFound = false;
                     Iterator<Item> iterator = inventory.getItems().iterator();
                     while (iterator.hasNext()) {
                         Item searchedItem = iterator.next();
                         if (searchedItem.getId() == productID) {
+                            isFound = true;
                             System.out.println("To remove item insert 1");
                             System.out.println("To change item's quantity insert 2");
                             System.out.println("To change item's price insert 3");
@@ -221,7 +236,7 @@ public class ViewItemsList {
                                     iterator.remove();
                                     inventory.updateItems();
                                     MainMenu.getMain();
-                                    break;
+                                    return;
                                 }
                                 case 2: {
                                     for (Item item : inventory.getItems()) {
@@ -231,7 +246,7 @@ public class ViewItemsList {
                                             item.setQuantity(newQuantity);
                                             inventory.updateItems();
                                             MainMenu.getMain();
-                                            break;
+                                            return;
                                         }
                                     }
                                     break;
@@ -244,7 +259,7 @@ public class ViewItemsList {
                                             item.setPrice(newPrice);
                                             inventory.updateItems();
                                             MainMenu.getMain();
-                                            break;
+                                            return;
                                         }
                                     }
                                     break;
@@ -257,24 +272,55 @@ public class ViewItemsList {
                                             item.setName(newName);
                                             inventory.updateItems();
                                             MainMenu.getMain();
-                                            break;
+                                            return;
                                         }
                                     }
                                     break;
                                 }
                                 default: {
                                     MainMenu.getMain();
-                                    break;
+                                    return;
                                 }
                             }
                             break;
                         }
                     }
+                    if (!isFound) {
+                        System.out.println("Insert valid item ID!");
+                        getItems();
+                        return;
+                    }
                     break;
+                }
+                case 3 : {
+                    int num = 1;
+                    System.out.println("Select item ID to review breakage:");
+                    for (Item searchedItem : inventory.getItems()) {
+                        if (searchedItem instanceof Detergent) {
+                            System.out.printf("%d) %s type: %s id: %d qty: %f price: %f\n", num, searchedItem.getName(), searchedItem.getCategory(), searchedItem.getId(), searchedItem.getQuantity(), searchedItem.getPrice());
+                            num++;
+                        }
+                    }
+                    boolean isFound = false;
+                    long breakage = read.readLong();
+                    for (Item item : inventory.getItems()) {
+                        if (item instanceof Detergent && item.getId() == breakage) {
+                            isFound = true;
+                            System.out.println("Insert quantity of broken items:");
+                            int quantity = read.readInteger();
+                            ((Detergent) item).handleBreakage(quantity);
+                            inventory.updateItems();
+                            MainMenu.getMain();
+                            return;
+                        }
+                    }
+                    System.out.println("Insert valid item ID!");
+                    getItems();
+                    return;
                 }
                 default: {
                     MainMenu.getMain();
-                    break;
+                    return;
                 }
             }
 

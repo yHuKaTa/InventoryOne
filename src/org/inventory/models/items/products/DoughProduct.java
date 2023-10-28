@@ -77,6 +77,7 @@ public class DoughProduct extends Item implements Perishable, Promotable {
         for (Promotion promotion : promotions) {
             if (promotionName.equals(promotion.promotion())) {
                 newPrice *= promotion.discount();
+                break;
             }
         }
         return newPrice;

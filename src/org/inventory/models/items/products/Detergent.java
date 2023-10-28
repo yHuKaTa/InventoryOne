@@ -37,7 +37,11 @@ public class Detergent extends Item implements Breakable, Promotable {
 
     @Override
     public void handleBreakage(int quantity) {
-        super.setQuantity(super.getQuantity() - quantity);
+        if (super.getQuantity() < quantity || super.getQuantity() <= 0) {
+            System.out.printf("Invalid quantity! Maximum quantity of item is %f\n", super.getQuantity());
+        } else {
+            super.setQuantity(super.getQuantity() - quantity);
+        }
     }
 
     @Override
@@ -56,6 +60,7 @@ public class Detergent extends Item implements Breakable, Promotable {
         for (Promotion promotion : promotions) {
             if (promotionName.equals(promotion.promotion())) {
                 newPrice *= promotion.discount();
+                break;
             }
         }
         return newPrice;

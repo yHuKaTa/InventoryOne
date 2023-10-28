@@ -1,6 +1,9 @@
 package org.inventory.data.inventoryone;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import org.inventory.models.items.products.AnimalProduct;
+import org.inventory.models.items.products.DoughProduct;
+import org.inventory.models.items.products.PlantProduct;
 import org.inventory.models.users.Admin;
 import org.inventory.util.Encoder;
 import org.inventory.util.Serializer;
@@ -21,6 +24,7 @@ public class InventoryOne {
     private final Serializer<Map<String, List<Order>>> historySerializer = new Serializer<>();
     private InventoryOne() {
         items = importItems();
+        handleExpiration();
         users = importUsers();
         history = importHistory();
     }
@@ -30,6 +34,18 @@ public class InventoryOne {
             inventory = new InventoryOne();
         }
         return inventory;
+    }
+
+    private void handleExpiration() {
+        for (Item item : items) {
+            if (item instanceof AnimalProduct) {
+                ((AnimalProduct) item).handleExpiration();
+            } else if (item instanceof DoughProduct) {
+                ((DoughProduct) item).handleExpiration();
+            } else if (item instanceof PlantProduct) {
+                ((PlantProduct) item).handleExpiration();
+            }
+        }
     }
 
     public List<Item> getItems() {

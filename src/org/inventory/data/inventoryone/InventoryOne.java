@@ -2,6 +2,7 @@ package org.inventory.data.inventoryone;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.inventory.models.users.Admin;
+import org.inventory.util.Encoder;
 import org.inventory.util.Serializer;
 import org.inventory.models.items.Item;
 import org.inventory.models.orders.Order;
@@ -57,7 +58,7 @@ public class InventoryOne {
         TypeReference<List<User>> typeReference = new TypeReference<>() {};
         List<User> temp = userSerializer.readFromJsonFile("src/org/inventory/data/users.json", typeReference);
         if (Objects.isNull(temp)) {
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            Encoder encoder = Encoder.getInstance();
             temp = new ArrayList<>();
             temp.add(new Admin("Admin", encoder.encode("@Dmin1234"), "0879385550"));
         }

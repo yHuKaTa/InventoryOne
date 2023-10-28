@@ -4,15 +4,15 @@ import org.inventory.data.inventoryone.InventoryOne;
 import org.inventory.models.users.Admin;
 import org.inventory.models.users.Customer;
 import org.inventory.models.users.User;
+import org.inventory.util.Encoder;
 import org.inventory.util.ReadFromConsole;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Objects;
 
 public class MainMenu {
     private static MainMenu main;
     private final InventoryOne inventory;
-    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    private final Encoder encoder = Encoder.getInstance();
     private static User user;
     private static ReadFromConsole read;
 
@@ -37,13 +37,14 @@ public class MainMenu {
         User temp = null;
         for (User user : inventory.getUsers()) {
             if (user.getUserName().equals(userName)) {
-                if (encoder.matches(password, user.getPassword())) {
+                if (encoder.match(password, user.getPassword())) {
                     temp = user;
                 }
             }
         }
         if (Objects.isNull(temp)) {
             System.out.println("Invalid username or password!");
+            temp = getUser();
         }
         return temp;
     }
@@ -64,10 +65,16 @@ public class MainMenu {
         } else if (command == 2) {
             System.out.println("Insert username:");
             String userName = read.readString();
+            for (User searched : inventory.getUsers()) {
+                while (searched.getUserName().equals(userName)) {
+                    System.out.println("User name already exists! Insert other user name.");
+                    userName = read.readString();
+                }
+            }
             System.out.println("Insert password:");
-            String password = read.readString();
+            String password = read.readPass();
             System.out.println("Insert phoneNumber:");
-            String phoneNumber = read.readString();
+            String phoneNumber = read.readPhone();
             user = new Customer(userName, encoder.encode(password), phoneNumber);
             inventory.getUsers().add(user);
             inventory.updateUsers();

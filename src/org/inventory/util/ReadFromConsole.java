@@ -30,25 +30,29 @@ public class ReadFromConsole {
 
 
     public int readInteger() {
-        return Integer.parseInt(readMatchingStringFromConsole("((\\d)+)", "%s is not valid digit number\n"));
+        return Integer.parseInt(readMatchingStringFromConsole("[0-9]+", "%s is not valid digit number\n"));
     }
 
     public double readDouble() {
-        return Double.parseDouble(readMatchingStringFromConsole("((\\d)+)(\\.((\\d)+))?", "%s is not valid decimal number\n"));
+        return Double.parseDouble(readMatchingStringFromConsole("([0-9]+)(\\.([0-9]+))?", "%s is not valid decimal number\n"));
     }
 
     public String readString() {
         return scanner.nextLine();
     }
 
+    public String readPhone() {
+        return readMatchingStringFromConsole("[0-9]+", "%s is not valid digit number\n");
+    }
+
     public String readPass() {
         String matcher = "^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\\d]){1,})(?=(.*[\\W]){1,})(?!.*\\s).{8,}$";
-        String error = "Your \"%d\" password should have:\n" +
-                "                    at least one upper case English letter\n" +
-                "                    at least one lower case English letter\n" +
-                "                    at least one digit\n" +
-                "                    at least one special character\n" +
-                "                    minimum eight characters";
+        String error = "Your password should have:\n" +
+                "              at least one upper case English letter\n" +
+                "              at least one lower case English letter\n" +
+                "              at least one digit\n" +
+                "              at least one special character\n" +
+                "              minimum eight characters";
         return readMatchingStringFromConsole(matcher, error);
     }
 

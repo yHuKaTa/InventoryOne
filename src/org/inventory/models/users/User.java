@@ -1,13 +1,12 @@
 package org.inventory.models.users;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.*;
 import org.inventory.models.items.Item;
 import org.inventory.models.orders.Cart;
 import org.inventory.models.orders.Order;
 import org.inventory.models.orders.Status;
+import org.inventory.util.Encoder;
+import org.inventory.util.ReadFromConsole;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -19,14 +18,16 @@ import java.util.*;
 })
 public abstract class User {
     private final String uuid;
-    private String type;
+    private final String type;
     private final String userName;
     private String password;
     private String phoneNumber;
     private final Cart cart;
     private final List<Order> orders;
+    private final ReadFromConsole read = ReadFromConsole.getInstance();
+    private final Encoder encoder = Encoder.getInstance();
 
-    public User(String userName, String password, String phoneNumber, String type) {
+    public User(String userName, String type, String password, String phoneNumber) {
         this.uuid = String.valueOf(UUID.randomUUID());
         this.type = type;
         this.userName = userName;
@@ -36,8 +37,7 @@ public abstract class User {
         this.orders = new LinkedList<>();
     }
 
-    @JsonCreator
-    public User(@JsonProperty("uuid") String uuid, @JsonProperty("type") String type, @JsonProperty("userName") String userName, @JsonProperty("password") String password, @JsonProperty("phoneNumber") String phoneNumber, @JsonProperty("cart") Cart cart, @JsonProperty("orders") List<Order> orders) {
+    public User(String uuid, String type, String userName, String password, String phoneNumber, Cart cart, List<Order> orders) {
         this.uuid = uuid;
         this.type = type;
         this.userName = userName;
@@ -47,37 +47,30 @@ public abstract class User {
         this.orders = orders;
     }
 
-    @JsonProperty("uuid")
     public String getUuid() {
         return uuid;
     }
 
-    @JsonProperty("type")
     public String getType() {
         return type;
     }
 
-    @JsonProperty("userName")
     public String getUserName() {
         return userName;
     }
 
-    @JsonProperty("password")
     public String getPassword() {
         return password;
     }
 
-    @JsonProperty("phoneNumber")
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    @JsonProperty("cart")
     public Cart getCart() {
         return cart;
     }
 
-    @JsonProperty("orders")
     public List<Order> getOrders() {
         return orders;
     }
@@ -152,11 +145,27 @@ public abstract class User {
         this.cart.items().clear();
     }
 
-    void setPassword(String password) {
+    public void changePassword() {
+        System.out.println("Input old password:");
+        String oldPass = read.readString();
+        if (encoder.match(oldPass, getPassword())) {
+            setPassword(encoder.encode(read.readPass()));
+        } else {
+            System.out.println("Invalid password! Insert correct password to change it!");
+        }
+    }
+
+    public void changePhoneNumber() {
+        System.out.println("Insert new phone number:");
+        String phoneNumber = String.valueOf(read.readInteger());
+        setPhoneNumber(phoneNumber);
+    }
+
+    private void setPassword(String password) {
         this.password = password;
     }
 
-    void setPhoneNumber(String phoneNumber) {
+    private void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 }

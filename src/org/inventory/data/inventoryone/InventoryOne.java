@@ -7,15 +7,14 @@ import org.inventory.util.Serializer;
 import org.inventory.models.items.Item;
 import org.inventory.models.orders.Order;
 import org.inventory.models.users.User;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.*;
 
 public class InventoryOne {
     private static InventoryOne inventory;
-    private List<Item> items;
-    private List<User> users;
-    private Map<User, List<Order>> history;
+    private final List<Item> items;
+    private final List<User> users;
+    private final Map<User, List<Order>> history;
 
     private final Serializer<List<Item>> itemSerializer = new Serializer<>();
     private final Serializer<List<User>> userSerializer = new Serializer<>();

@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.inventory.models.orders.Cart;
 import org.inventory.models.orders.Order;
-import org.inventory.util.Encoder;
-import org.inventory.util.ReadFromConsole;
 
 import java.util.List;
 

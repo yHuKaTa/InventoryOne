@@ -7,7 +7,6 @@ import org.inventory.models.items.Promotion;
 import org.inventory.models.items.appearances.Breakable;
 import org.inventory.models.items.appearances.Promotable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Detergent extends Item implements Breakable, Promotable {

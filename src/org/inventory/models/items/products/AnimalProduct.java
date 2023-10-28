@@ -8,7 +8,6 @@ import org.inventory.models.items.appearances.Perishable;
 import org.inventory.models.items.appearances.Promotable;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class AnimalProduct extends Item implements Discountable, Promotable, Perishable {

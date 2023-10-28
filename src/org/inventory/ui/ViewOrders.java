@@ -11,7 +11,7 @@ import java.util.Objects;
 
 public class ViewOrders {
     private static ViewOrders orders;
-    private InventoryOne inventory;
+    private final InventoryOne inventory;
     private User user;
     private final ReadFromConsole read;
 

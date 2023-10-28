@@ -145,19 +145,22 @@ public abstract class User {
         this.cart.items().clear();
     }
 
-    public void changePassword() {
+    public boolean changePassword() {
         System.out.println("Input old password:");
         String oldPass = read.readString();
+        boolean isChanged = false;
         if (encoder.match(oldPass, getPassword())) {
             setPassword(encoder.encode(read.readPass()));
+            isChanged = true;
         } else {
             System.out.println("Invalid password! Insert correct password to change it!");
         }
+        return isChanged;
     }
 
     public void changePhoneNumber() {
         System.out.println("Insert new phone number:");
-        String phoneNumber = String.valueOf(read.readInteger());
+        String phoneNumber = read.readPhone();
         setPhoneNumber(phoneNumber);
     }
 

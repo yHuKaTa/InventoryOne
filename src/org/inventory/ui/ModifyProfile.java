@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public class ModifyProfile {
     private static ModifyProfile profile;
-    private InventoryOne inventory;
+    private final InventoryOne inventory;
     private User user;
     private final ReadFromConsole read;
 
@@ -32,6 +32,30 @@ public class ModifyProfile {
     }
 
     private void getMenu() {
-
+        System.out.println("To change password insert 1");
+        System.out.println("To change phone number insert 2");
+        System.out.println("To return to main menu insert other else");
+        int choice = read.readInteger();
+        switch (choice) {
+            case 1: {
+                if (user.changePassword()) {
+                    inventory.updateUsers();
+                    inventory.updateHistory();
+                }
+                getMenu();
+                break;
+            }
+            case 2: {
+                user.changePhoneNumber();
+                inventory.updateUsers();
+                inventory.updateHistory();
+                getMenu();
+                break;
+            }
+            default: {
+                MainMenu.getMain();
+                break;
+            }
+        }
     }
 }

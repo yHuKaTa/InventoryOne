@@ -15,6 +15,12 @@ public class DoughProduct extends Item implements Perishable, Promotable {
     private LocalDate dateOfExpiration;
     private List<Promotion> promotions;
 
+    public DoughProduct(DoughProduct otherDough) {
+        super(otherDough);
+        this.dateOfExpiration = LocalDate.from(otherDough.dateOfExpiration);
+        this.promotions = List.copyOf(otherDough.promotions);
+    }
+
     public DoughProduct(String name, float price, float quantity) {
         super("Dough Product", name, price, quantity);
         this.promotions = new ArrayList<>();

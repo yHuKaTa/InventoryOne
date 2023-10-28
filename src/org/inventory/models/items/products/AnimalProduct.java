@@ -1,5 +1,6 @@
 package org.inventory.models.items.products;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.inventory.models.items.Item;
 import org.inventory.models.items.Promotion;
@@ -8,16 +9,25 @@ import org.inventory.models.items.appearances.Perishable;
 import org.inventory.models.items.appearances.Promotable;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AnimalProduct extends Item implements Discountable, Promotable, Perishable {
     private float discount = 0.0f;
     private LocalDate dateOfExpiration;
-    private List<Promotion> promotions;
+    private final List<Promotion> promotions;
+
+    public AnimalProduct(AnimalProduct otherProduct) {
+        super(otherProduct);
+        this.discount = otherProduct.discount;
+        this.dateOfExpiration = LocalDate.from(otherProduct.dateOfExpiration);
+        this.promotions = List.copyOf(otherProduct.promotions);
+    }
 
     public AnimalProduct(String name, float price, float quantity, LocalDate dateOfExpiration) {
         super("Animal Product", name, price, quantity);
         this.dateOfExpiration = dateOfExpiration;
+        this.promotions = new ArrayList<>();
     }
 
     public AnimalProduct(@JsonProperty("id") long id, @JsonProperty("category") String category, @JsonProperty("name") String name, @JsonProperty("price") float price, @JsonProperty("quantity") float quantity, @JsonProperty("discount") float discount, @JsonProperty("dateOfExpiration") LocalDate dateOfExpiration, @JsonProperty("promotions") List<Promotion> promotions) {

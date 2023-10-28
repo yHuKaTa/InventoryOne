@@ -2,6 +2,7 @@ package org.inventory.ui;
 
 import org.inventory.data.inventoryone.InventoryOne;
 import org.inventory.models.items.Item;
+import org.inventory.models.items.products.ProductFactory;
 import org.inventory.models.users.User;
 import org.inventory.util.ReadFromConsole;
 
@@ -53,23 +54,44 @@ public class BuyMenu {
                 MainMenu.getMain();
             } else {
                 Item wished = null;
+                Item cartItem = null;
                 while (Objects.isNull(wished)) {
                     while (!wish.matches("[0-9]+")) {
                         System.out.println("Please provide valid ID with digits!");
                         wish = read.readString();
                     }
-                    for (Item item : inventory.getItems()) {
+                    for (Item item : user.getCart().items()) {
                         if (item.getId() == Long.parseLong(wish)) {
-                            System.out.println("Insert quantity:");
-                            float qty = (float) read.readDouble();
-                            while (qty > item.getQuantity()) {
-                                System.out.printf("Insufficient quantity! Maximum quantity is %f\n", item.getQuantity());
-                                qty = (float) read.readDouble();
-                            }
-                            wished = item;
-                            wished.setQuantity(qty);
+                            cartItem = item;
                             break;
                         }
+                    }
+                    for (Item item : inventory.getItems()) {
+                            if (item.getId() == Long.parseLong(wish) && Objects.isNull(cartItem)) {
+                                wished = ProductFactory.generate(item);
+                                System.out.println("Insert quantity:");
+                                float qty = (float) read.readDouble();
+                                while (qty > item.getQuantity()) {
+                                    System.out.printf("Insufficient quantity! Maximum quantity is %f\n", item.getQuantity());
+                                    qty = (float) read.readDouble();
+                                }
+                                wished.setQuantity(qty);
+                                break;
+                            } else if (item.getId() == Long.parseLong(wish) && Objects.nonNull(cartItem)) {
+                                System.out.println("Insert quantity:");
+                                float qty = (float) read.readDouble();
+                                while (qty > item.getQuantity() - cartItem.getQuantity()) {
+                                    System.out.printf("Insufficient quantity! Maximum quantity is %f\n", item.getQuantity() - cartItem.getQuantity());
+                                    qty = (float) read.readDouble();
+                                    if (qty <= 0) {
+                                        getItems();
+                                        return;
+                                    }
+                                }
+                                cartItem.setQuantity(cartItem.getQuantity() + qty);
+                                getItems();
+                                return;
+                            }
                     }
                     if (Objects.isNull(wished)) {
                         System.out.println("Please provide valid item ID or exit buy menu with sentence \"exit\".");

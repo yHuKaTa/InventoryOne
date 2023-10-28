@@ -10,9 +10,13 @@ import java.time.LocalDate;
 
 public class PlantProduct extends Item implements Perishable, Discountable {
     private LocalDate dateOfExpiration;
-
     private float discount;
 
+    public PlantProduct(PlantProduct otherProduct) {
+        super(otherProduct);
+        this.dateOfExpiration = LocalDate.from(otherProduct.dateOfExpiration);
+        this.discount = otherProduct.discount;
+    }
     public PlantProduct(String name, float price, float quantity, LocalDate dateOfExpiration) {
         super("Plant Product", name, price, quantity);
         this.dateOfExpiration = dateOfExpiration;

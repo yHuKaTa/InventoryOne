@@ -53,7 +53,7 @@ public class ViewCart {
                         }
                     }
                     user.generateOrder();
-                    System.out.printf("Successfully generated new order! Your order ID is %s", user.getOrders().getLast().getId());
+                    System.out.printf("Successfully generated new order! Your order ID is %s\n", user.getOrders().getLast().getId());
                     if (inventory.getHistory().containsKey(user.getUuid())) {
                         inventory.getHistory().get(user.getUuid()).add(user.getOrders().getLast());
                     } else {
@@ -68,7 +68,7 @@ public class ViewCart {
                 }
                 case 2: {
                     System.out.println("Provide ID of item to remove:");
-                    long id = read.readInteger();
+                    long id = read.readLong();
                     if (user.removeFromCart(id)) {
                         System.out.println("Successfully removed item from cart!");
                     }
@@ -78,7 +78,7 @@ public class ViewCart {
                 }
                 case 3: {
                     System.out.println("Provide ID of item to change quantity:");
-                    long id = read.readInteger();
+                    long id = read.readLong();
                     System.out.println("Insert new quantity:");
                     float quantity = (float) read.readDouble();
                     if (user.reduceQuantity(id, quantity)) {

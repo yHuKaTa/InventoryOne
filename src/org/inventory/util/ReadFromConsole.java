@@ -28,13 +28,16 @@ public class ReadFromConsole {
         return readFromConsole;
     }
 
+    public long readLong() {
+        return Long.parseLong(readMatchingStringFromConsole("([0-9])+", "%s is not valid digit number\n"));
+    }
 
     public int readInteger() {
-        return Integer.parseInt(readMatchingStringFromConsole("[0-9]+", "%s is not valid digit number\n"));
+        return Integer.parseInt(readMatchingStringFromConsole("([0-9])+", "%s is not valid digit number\n"));
     }
 
     public double readDouble() {
-        return Double.parseDouble(readMatchingStringFromConsole("([0-9]+)(\\.([0-9]+))?", "%s is not valid decimal number\n"));
+        return Double.parseDouble(readMatchingStringFromConsole("(([0-9])+)(\\.(([0-9])+))?", "%s is not valid decimal number\n"));
     }
 
     public String readString() {
@@ -42,7 +45,7 @@ public class ReadFromConsole {
     }
 
     public String readPhone() {
-        return readMatchingStringFromConsole("(\\+)?[0-9]+", "%s is not valid digit number\n");
+        return readMatchingStringFromConsole("(\\+)?([0-9])+", "%s is not valid digit number\n");
     }
 
     public String readPass() {

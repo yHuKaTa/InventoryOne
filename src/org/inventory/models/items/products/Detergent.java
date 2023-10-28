@@ -12,6 +12,11 @@ import java.util.List;
 public class Detergent extends Item implements Breakable, Promotable {
     private List<Promotion> promotions;
 
+    public Detergent(Detergent otherDetergent) {
+        super(otherDetergent);
+        this.promotions = List.copyOf(otherDetergent.promotions);
+    }
+
     public Detergent(String name, float price, float quantity) {
         super("Detergent", name, price, quantity);
     }

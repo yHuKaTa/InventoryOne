@@ -54,12 +54,12 @@ public class AnimalProduct extends Item implements Discountable, Promotable, Per
 
     @Override
     public void applyDiscount(int discountPercentage) {
-        super.setPrice(super.getPrice() * discount);
+        super.setPrice(super.getPrice() - (super.getPrice() * ((discountPercentage * 1.0f) / 100)));
     }
 
     @Override
     public void setDiscount(int discountPercentage) {
-        this.discount = (discountPercentage * 1.0f / 100);
+        this.discount = discountPercentage;
     }
 
     @Override
@@ -103,7 +103,7 @@ public class AnimalProduct extends Item implements Discountable, Promotable, Per
 
     @Override
     public void setNewPromotion(String promotionName, LocalDate startDate, LocalDate endDate, int discount) {
-        promotions.add(new Promotion(promotionName, startDate, endDate, (discount * 0.01f)));
+        promotions.add(new Promotion(promotionName, startDate, endDate, discount));
     }
 
     @Override

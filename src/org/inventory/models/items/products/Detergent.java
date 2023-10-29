@@ -71,7 +71,7 @@ public class Detergent extends Item implements Breakable, Promotable {
 
     @Override
     public void setNewPromotion(String promotionName, LocalDate startDate, LocalDate endDate, int discount) {
-        promotions.add(new Promotion(promotionName, startDate, endDate, (discount * 0.01f)));
+        promotions.add(new Promotion(promotionName, startDate, endDate, discount));
     }
 
     @Override

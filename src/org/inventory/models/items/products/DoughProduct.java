@@ -17,8 +17,10 @@ public class DoughProduct extends Item implements Perishable, Promotable {
     private LocalDate dateOfExpiration;
     private final List<Promotion> promotions;
 
+    private float discount = 0.0f;
     public DoughProduct(DoughProduct otherDough) {
         super(otherDough);
+        this.discount = otherDough.discount;
         this.dateOfExpiration = LocalDate.from(otherDough.dateOfExpiration);
         this.promotions = List.copyOf(otherDough.promotions);
     }
@@ -29,10 +31,11 @@ public class DoughProduct extends Item implements Perishable, Promotable {
     }
 
     @JsonCreator
-    public DoughProduct(@JsonProperty("id") long id, @JsonProperty("name") String name, @JsonProperty("price") float price, @JsonProperty("quantity") float quantity, @JsonProperty("dateOfExpiration") LocalDate dateOfExpiration, @JsonProperty("promotions") List<Promotion> promotions) {
+    public DoughProduct(@JsonProperty("id") long id, @JsonProperty("name") String name, @JsonProperty("price") float price, @JsonProperty("quantity") float quantity, @JsonProperty("dateOfExpiration") LocalDate dateOfExpiration, @JsonProperty("promotions") List<Promotion> promotions, @JsonProperty("discount") float discount) {
         super(id, "Dough Product", name, price, quantity);
         this.dateOfExpiration = dateOfExpiration;
         this.promotions = promotions;
+        this.discount = discount;
     }
 
     public LocalDate getDateOfExpiration() {
@@ -57,18 +60,29 @@ public class DoughProduct extends Item implements Perishable, Promotable {
     public void handleExpiration() {
         if (dateOfExpiration.isEqual(LocalDate.now())) {
             super.setQuantity((float)Math.floor(super.getQuantity() * 0.7f));
+        } else if (!promotions.isEmpty()) {
+            boolean noPromo = true;
+            for (Promotion promotion : promotions) {
+                if (promotion.startDate().isAfter(LocalDate.now()) || promotion.startDate().isEqual(LocalDate.now()) &&
+                        promotion.endDate().isBefore(LocalDate.now())) {
+                    noPromo = false;
+                    participateInPromotion(promotion.promotion());
+                }
+            }
+            if (noPromo && discount > 0) {
+                super.setPrice((super.getPrice() / discount));
+            }
         }
     }
 
     @Override
-    public void participateInPromotion(String promotionName, String period) {
-                setExpiration(period);
+    public void participateInPromotion(String promotionName) {
                 super.setPrice(getPromotionalPrice(promotionName));
     }
 
     @Override
-    public void setNewPromotion(String promotionName, int discount) {
-        promotions.add(new Promotion(promotionName, (discount * 0.01f)));
+    public void setNewPromotion(String promotionName, LocalDate startDate, LocalDate endDate, int discount) {
+        promotions.add(new Promotion(promotionName, startDate, endDate, (discount * 0.01f)));
     }
 
     @Override
@@ -77,6 +91,7 @@ public class DoughProduct extends Item implements Perishable, Promotable {
         for (Promotion promotion : promotions) {
             if (promotionName.equals(promotion.promotion())) {
                 newPrice *= promotion.discount();
+                this.discount = promotion.discount();
                 break;
             }
         }

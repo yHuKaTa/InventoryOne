@@ -43,6 +43,10 @@ public class AnimalProduct extends Item implements Discountable, Promotable, Per
         this.promotions = promotions;
     }
 
+    public boolean isDiscounted() {
+        return discounted;
+    }
+
     public float getDiscount() {
         return discount;
     }
@@ -68,7 +72,7 @@ public class AnimalProduct extends Item implements Discountable, Promotable, Per
 
     @Override
     public void resetPrice() {
-        super.setPrice(super.getPrice() / discount);
+        super.setPrice(super.getPrice() + (super.getPrice() * this.discount));
     }
 
     @Override
@@ -85,6 +89,7 @@ public class AnimalProduct extends Item implements Discountable, Promotable, Per
     public void handleExpiration() {
         if (dateOfExpiration.isEqual(LocalDate.now().plusDays(3)) || dateOfExpiration.isBefore(LocalDate.now().plusDays(3)) && !discounted) {
             applyDiscount(30);
+            this.discount = 30;
         } else if (dateOfExpiration.isAfter(LocalDate.now()) && discounted) {
             discounted = false;
             resetPrice();

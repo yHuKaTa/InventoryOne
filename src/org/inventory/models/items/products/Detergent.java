@@ -63,7 +63,7 @@ public class Detergent extends Item implements Breakable, Promotable {
             }
             if (noPromo && discount > 0) {
                 this.discounted = false;
-                super.setPrice((super.getPrice() / discount));
+                super.setPrice(super.getPrice() + (super.getPrice() * discount));
             }
         }
     }

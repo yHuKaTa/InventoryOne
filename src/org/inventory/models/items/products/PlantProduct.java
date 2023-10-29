@@ -13,23 +13,27 @@ import java.time.LocalDate;
 public class PlantProduct extends Item implements Perishable, Discountable {
     private LocalDate dateOfExpiration;
     private float discount;
+    private boolean discounted;
 
     public PlantProduct(PlantProduct otherProduct) {
         super(otherProduct);
         this.dateOfExpiration = LocalDate.from(otherProduct.dateOfExpiration);
         this.discount = otherProduct.discount;
+        this.discounted = otherProduct.discounted;
     }
     public PlantProduct(String name, float price, float quantity, LocalDate dateOfExpiration) {
         super("Plant Product", name, price, quantity);
         this.dateOfExpiration = dateOfExpiration;
         this.discount = 0.0f;
+        this.discounted = false;
     }
 
     @JsonCreator
-    public PlantProduct(@JsonProperty("id") long id, @JsonProperty("name") String name, @JsonProperty("price") float price, @JsonProperty("quantity") float quantity, @JsonProperty("dateOfExpiration") LocalDate dateOfExpiration, @JsonProperty("discount") float discount) {
+    public PlantProduct(@JsonProperty("id") long id, @JsonProperty("name") String name, @JsonProperty("price") float price, @JsonProperty("quantity") float quantity, @JsonProperty("dateOfExpiration") LocalDate dateOfExpiration, @JsonProperty("discount") float discount, @JsonProperty("discounted") boolean discounted) {
         super(id, "Plant Product", name, price, quantity);
         this.dateOfExpiration = dateOfExpiration;
         this.discount = discount;
+        this.discounted = discounted;
     }
 
     public LocalDate getDateOfExpiration() {
@@ -42,7 +46,8 @@ public class PlantProduct extends Item implements Perishable, Discountable {
 
     @Override
     public void applyDiscount(int discountPercentage) {
-        super.setPrice(super.getPrice() * discount);
+        super.setPrice(super.getPrice() - (super.getPrice() * discountPercentage));
+        this.discounted = true;
     }
 
     @Override
@@ -52,7 +57,8 @@ public class PlantProduct extends Item implements Perishable, Discountable {
 
     @Override
     public void resetPrice() {
-        super.setPrice(super.getPrice() / discount);
+        super.setPrice(super.getPrice() + (super.getPrice() * discount));
+        this.discounted = false;
     }
 
     @Override
@@ -67,8 +73,10 @@ public class PlantProduct extends Item implements Perishable, Discountable {
 
     @Override
     public void handleExpiration() {
-        if (dateOfExpiration.isEqual(LocalDate.now().plusDays(2))) {
+        if (dateOfExpiration.isEqual(LocalDate.now().plusDays(2)) && !this.discounted) {
             applyDiscount(20);
+        } else {
+            resetPrice();
         }
     }
 }

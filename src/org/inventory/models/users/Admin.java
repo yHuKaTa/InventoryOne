@@ -14,6 +14,10 @@ public class Admin extends User {
         super(userName, "Admin", password, phoneNumber);
     }
 
+    public Admin(User user) {
+        super(user);
+    }
+
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public Admin(@JsonProperty("uuid") String uuid, @JsonProperty("userName") String userName, @JsonProperty("password") String password, @JsonProperty("phoneNumber") String phoneNumber, @JsonProperty("cart") Cart cart, @JsonProperty("orders") List<Order> orders) {
         super(uuid, "Admin", userName, password, phoneNumber, cart, orders);

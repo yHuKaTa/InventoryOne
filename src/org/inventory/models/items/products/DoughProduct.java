@@ -16,8 +16,8 @@ import java.util.List;
 public class DoughProduct extends Item implements Perishable, Promotable {
     private LocalDate dateOfExpiration;
     private final List<Promotion> promotions;
-    private boolean discounted = false;
-    private float discount = 0.0f;
+    private boolean discounted;
+    private float discount;
     public DoughProduct(DoughProduct otherDough) {
         super(otherDough);
         this.discount = otherDough.discount;
@@ -29,6 +29,8 @@ public class DoughProduct extends Item implements Perishable, Promotable {
     public DoughProduct(String name, float price, float quantity) {
         super("Dough Product", name, price, quantity);
         this.promotions = new ArrayList<>();
+        this.discounted = false;
+        this.discount = 0.0f;
     }
 
     @JsonCreator

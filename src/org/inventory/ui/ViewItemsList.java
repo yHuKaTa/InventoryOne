@@ -7,7 +7,6 @@ import org.inventory.models.items.products.AnimalProduct;
 import org.inventory.models.items.products.Detergent;
 import org.inventory.models.items.products.DoughProduct;
 import org.inventory.models.items.products.PlantProduct;
-import org.inventory.models.users.Admin;
 import org.inventory.models.users.Customer;
 import org.inventory.models.users.User;
 import org.inventory.util.ReadFromConsole;
@@ -213,6 +212,7 @@ public class ViewItemsList {
                     System.out.println("Select item ID to manipulate it:");
                     for (Item item : inventory.getItems()) {
                         System.out.printf("%d) %s type: %s id: %d qty: %f price: %f\n", num, item.getName(), item.getCategory(), item.getId(), item.getQuantity(), item.getPrice());
+                        num++;
                     }
                     System.out.println("To exit items menu insert 0.");
                     long productID = read.readLong();
@@ -347,6 +347,7 @@ public class ViewItemsList {
                                         num = 1;
                                         for (Promotion promotion : animalProduct.getPromotions()) {
                                             System.out.printf("%d) %s - start date : %s end date: %s discount: %f\n", num, promotion.promotion(), promotion.startDate().toString(), promotion.endDate().toString(), promotion.discount());
+                                            num++;
                                         }
                                         System.out.println("To add new promotion insert 1");
                                         System.out.println("To exit insert every else");
@@ -367,6 +368,7 @@ public class ViewItemsList {
                                         num = 1;
                                         for (Promotion promotion : detergent.getPromotions()) {
                                             System.out.printf("%d) %s - start date : %s end date: %s discount: %f\n", num, promotion.promotion(), promotion.startDate().toString(), promotion.endDate().toString(), promotion.discount());
+                                            num++;
                                         }
                                         System.out.println("To add new promotion insert 1");
                                         System.out.println("To exit insert every else");
@@ -387,6 +389,7 @@ public class ViewItemsList {
                                         num = 1;
                                         for (Promotion promotion : doughProduct.getPromotions()) {
                                             System.out.printf("%d) %s - start date : %s end date: %s discount: %f\n", num, promotion.promotion(), promotion.startDate().toString(), promotion.endDate().toString(), promotion.discount());
+                                            num++;
                                         }
                                         System.out.println("To add new promotion insert 1");
                                         System.out.println("To exit insert every else");

@@ -47,6 +47,16 @@ public abstract class User {
         this.orders = orders;
     }
 
+    public User(User otherUser) {
+        this.uuid = otherUser.uuid;
+        this.type = otherUser.type;
+        this.userName = otherUser.userName;
+        this.password = otherUser.password;
+        this.phoneNumber = otherUser.phoneNumber;
+        this.cart = new Cart(new ArrayList<>(otherUser.cart.items()));
+        this.orders = new LinkedList<>(otherUser.orders);
+    }
+
     public String getUuid() {
         return uuid;
     }

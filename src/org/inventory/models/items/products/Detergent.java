@@ -15,8 +15,8 @@ import java.util.List;
 @JsonTypeName("Detergent")
 public class Detergent extends Item implements Breakable, Promotable {
     private final List<Promotion> promotions;
-    private float discount = 0.0f;
-    private boolean discounted = false;
+    private float discount;
+    private boolean discounted;
 
     public Detergent(Detergent otherDetergent) {
         super(otherDetergent);
@@ -28,6 +28,8 @@ public class Detergent extends Item implements Breakable, Promotable {
     public Detergent(String name, float price, float quantity) {
         super("Detergent", name, price, quantity);
         this.promotions = new ArrayList<>();
+        this.discount = 0.0f;
+        this.discounted = false;
     }
 
     @JsonCreator

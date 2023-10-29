@@ -14,6 +14,10 @@ public class Customer extends User{
         super(userName, "Customer", password, phoneNumber);
     }
 
+    public Customer(User user) {
+        super(user);
+    }
+
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public Customer(@JsonProperty("uuid") String uuid, @JsonProperty("userName") String userName, @JsonProperty("password") String password, @JsonProperty("phoneNumber") String phoneNumber, @JsonProperty("cart") Cart cart, @JsonProperty("orders") List<Order> orders) {
         super(uuid, "Customer", userName, password, phoneNumber, cart, orders);

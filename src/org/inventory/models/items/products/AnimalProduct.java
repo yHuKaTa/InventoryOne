@@ -15,8 +15,8 @@ import java.util.List;
 
 @JsonTypeName("Animal Product")
 public class AnimalProduct extends Item implements Discountable, Promotable, Perishable {
-    private float discount = 0.0f;
-    private boolean discounted = false;
+    private float discount;
+    private boolean discounted;
     private LocalDate dateOfExpiration;
     private final List<Promotion> promotions;
 
@@ -31,6 +31,8 @@ public class AnimalProduct extends Item implements Discountable, Promotable, Per
     public AnimalProduct(String name, float price, float quantity, LocalDate dateOfExpiration) {
         super("Animal Product", name, price, quantity);
         this.dateOfExpiration = dateOfExpiration;
+        this.discount = 0.0f;
+        this.discounted = false;
         this.promotions = new ArrayList<>();
     }
 

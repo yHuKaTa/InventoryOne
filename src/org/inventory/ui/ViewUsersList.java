@@ -8,6 +8,7 @@ import org.inventory.models.orders.Status;
 import org.inventory.models.users.Admin;
 import org.inventory.models.users.Customer;
 import org.inventory.models.users.User;
+import org.inventory.util.Encoder;
 import org.inventory.util.ReadFromConsole;
 
 import java.util.Iterator;
@@ -49,9 +50,48 @@ public class ViewUsersList {
             System.out.printf("%d) %s type: %s ID: %s\n", num, users.getUserName(), users.getType(), users.getUuid());
             num++;
         }
-        System.out.println("Insert user's ID or type exit to return into main menu:");
+        System.out.println("Insert user's ID to modify profile");
+        System.out.println("Insert \"Add new admin\" to create new Admin profile");
+        System.out.println("Insert \"Add new customer\" to create new Customer profile");
+        System.out.println("Insert \"Exit\" to return into main menu");
         String id = read.readString();
         if (id.equalsIgnoreCase("exit") || id.isEmpty()) {
+            MainMenu.getMain();
+            return;
+        } else if (id.equalsIgnoreCase("add new admin")) {
+            System.out.println("Insert username:");
+            String userName = read.readString();
+            for (User searched : inventory.getUsers()) {
+                while (searched.getUserName().equals(userName)) {
+                    System.out.println("User name already exists! Insert other user name.");
+                    userName = read.readString();
+                }
+            }
+            System.out.println("Insert password:");
+            String password = read.readPass();
+            System.out.println("Insert phoneNumber:");
+            String phoneNumber = read.readPhone();
+            User temp = new Admin(userName, Encoder.getInstance().encode(password), phoneNumber);
+            inventory.getUsers().add(temp);
+            inventory.updateUsers();
+            MainMenu.getMain();
+            return;
+        } else if (id.equalsIgnoreCase("add new customer")) {
+            System.out.println("Insert username:");
+            String userName = read.readString();
+            for (User searched : inventory.getUsers()) {
+                while (searched.getUserName().equals(userName)) {
+                    System.out.println("User name already exists! Insert other user name.");
+                    userName = read.readString();
+                }
+            }
+            System.out.println("Insert password:");
+            String password = read.readPass();
+            System.out.println("Insert phoneNumber:");
+            String phoneNumber = read.readPhone();
+            User temp = new Customer(userName, Encoder.getInstance().encode(password), phoneNumber);
+            inventory.getUsers().add(temp);
+            inventory.updateUsers();
             MainMenu.getMain();
             return;
         }

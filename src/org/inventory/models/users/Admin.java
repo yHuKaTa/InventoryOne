@@ -16,6 +16,7 @@ public class Admin extends User {
 
     public Admin(User user) {
         super(user);
+        super.changeType("Admin");
     }
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)

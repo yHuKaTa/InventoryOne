@@ -109,10 +109,16 @@ public class ViewUsersList {
                 switch (choice) {
                     case 1: {
                         viewInfo(searchedUser);
+                        inventory.updateUsers();
                         getUsers();
                         return;
                     }
                     case 2: {
+                        if (searchedUser.getUuid().equals(user.getUuid())) {
+                            System.out.println("You can't change your user type!");
+                            getUsers();
+                            return;
+                        }
                         System.out.println("For Customer insert 1");
                         System.out.println("For Admin insert 2");
                         System.out.println("To exit insert every other digit");
@@ -137,7 +143,13 @@ public class ViewUsersList {
                         }
                     }
                     case 3: {
+                        if (searchedUser.getUuid().equals(user.getUuid())) {
+                            System.out.println("Can not remove your self!");
+                            getUsers();
+                            return;
+                        }
                         iterator.remove();
+                        inventory.updateUsers();
                         getUsers();
                         return;
                     }
@@ -154,10 +166,10 @@ public class ViewUsersList {
     }
 
     private void viewInfo(User user) {
-        int choice = read.readInteger();
         System.out.println("To view user's orders insert 1");
         System.out.println("To view user's cart insert 2");
         System.out.println("To exit insert every other digit");
+        int choice = read.readInteger();
         if (choice == 1) {
             if (user.getOrders().isEmpty()) {
                 System.out.println("There aren't any orders!");
@@ -228,6 +240,10 @@ public class ViewUsersList {
                 return;
             }
         } else if (choice == 2) {
+            if (user.getCart().items().isEmpty()) {
+                System.out.println("There aren't any items in cart!");
+                return;
+            }
             int num = 1;
             for (Item item : user.getCart().items()) {
                 System.out.printf("%d) %s ID: %d quantity: %f total price: %f\n", num, item.getName(), item.getId(), item.getQuantity(), item.getTotalPrice(item.getQuantity()));

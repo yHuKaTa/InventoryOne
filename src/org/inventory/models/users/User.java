@@ -18,7 +18,7 @@ import java.util.*;
 })
 public abstract class User {
     private final String uuid;
-    private final String type;
+    private String type;
     private final String userName;
     private String password;
     private String phoneNumber;
@@ -85,6 +85,9 @@ public abstract class User {
         return orders;
     }
 
+    void changeType(String type) {
+        this.type = type;
+    }
     public void addToCart(Item item) {
         cart.items().add(item);
     }

@@ -16,6 +16,7 @@ public class Customer extends User{
 
     public Customer(User user) {
         super(user);
+        super.changeType("Customer");
     }
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)

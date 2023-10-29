@@ -16,10 +16,12 @@ import java.util.List;
 public class Detergent extends Item implements Breakable, Promotable {
     private final List<Promotion> promotions;
     private float discount = 0.0f;
+    private boolean discounted = false;
 
     public Detergent(Detergent otherDetergent) {
         super(otherDetergent);
         this.discount = otherDetergent.discount;
+        this.discounted = otherDetergent.discounted;
         this.promotions = List.copyOf(otherDetergent.promotions);
     }
 
@@ -29,9 +31,10 @@ public class Detergent extends Item implements Breakable, Promotable {
     }
 
     @JsonCreator
-    public Detergent(@JsonProperty("id") long id, @JsonProperty("name") String name, @JsonProperty("price") float price, @JsonProperty("quantity") float quantity, @JsonProperty("promotions") List<Promotion> promotions, @JsonProperty("discount") float discount) {
+    public Detergent(@JsonProperty("id") long id, @JsonProperty("name") String name, @JsonProperty("price") float price, @JsonProperty("quantity") float quantity, @JsonProperty("promotions") List<Promotion> promotions, @JsonProperty("discount") float discount, @JsonProperty("discounted") boolean discounted) {
         super(id, "Detergent", name, price, quantity);
         this.discount = discount;
+        this.discounted = discounted;
         this.promotions = promotions;
     }
 
@@ -49,7 +52,7 @@ public class Detergent extends Item implements Breakable, Promotable {
     }
 
     public void handleExpiration() {
-        if (!promotions.isEmpty()) {
+        if (!promotions.isEmpty() && !this.discounted) {
             boolean noPromo = true;
             for (Promotion promotion : promotions) {
                 if (promotion.startDate().isAfter(LocalDate.now()) || promotion.startDate().isEqual(LocalDate.now()) &&
@@ -59,6 +62,7 @@ public class Detergent extends Item implements Breakable, Promotable {
                 }
             }
             if (noPromo && discount > 0) {
+                this.discounted = false;
                 super.setPrice((super.getPrice() / discount));
             }
         }
@@ -81,6 +85,7 @@ public class Detergent extends Item implements Breakable, Promotable {
             if (promotionName.equals(promotion.promotion())) {
                 newPrice *= promotion.discount();
                 this.discount = promotion.discount();
+                this.discounted = true;
                 break;
             }
         }

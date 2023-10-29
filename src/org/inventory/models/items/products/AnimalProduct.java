@@ -16,12 +16,14 @@ import java.util.List;
 @JsonTypeName("Animal Product")
 public class AnimalProduct extends Item implements Discountable, Promotable, Perishable {
     private float discount = 0.0f;
+    private boolean discounted = false;
     private LocalDate dateOfExpiration;
     private final List<Promotion> promotions;
 
     public AnimalProduct(AnimalProduct otherProduct) {
         super(otherProduct);
         this.discount = otherProduct.discount;
+        this.discounted = otherProduct.discounted;
         this.dateOfExpiration = LocalDate.from(otherProduct.dateOfExpiration);
         this.promotions = List.copyOf(otherProduct.promotions);
     }
@@ -33,9 +35,10 @@ public class AnimalProduct extends Item implements Discountable, Promotable, Per
     }
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    public AnimalProduct(@JsonProperty("id") long id, @JsonProperty("name") String name, @JsonProperty("price") float price, @JsonProperty("quantity") float quantity, @JsonProperty("discount") float discount, @JsonProperty("dateOfExpiration") LocalDate dateOfExpiration, @JsonProperty("promotions") List<Promotion> promotions) {
+    public AnimalProduct(@JsonProperty("id") long id, @JsonProperty("name") String name, @JsonProperty("price") float price, @JsonProperty("quantity") float quantity, @JsonProperty("discount") float discount, @JsonProperty("dateOfExpiration") LocalDate dateOfExpiration, @JsonProperty("promotions") List<Promotion> promotions, @JsonProperty("discounted") boolean discounted) {
         super(id, "Animal Product", name, price, quantity);
         this.discount = discount;
+        this.discounted = discounted;
         this.dateOfExpiration = dateOfExpiration;
         this.promotions = promotions;
     }
@@ -55,6 +58,7 @@ public class AnimalProduct extends Item implements Discountable, Promotable, Per
     @Override
     public void applyDiscount(int discountPercentage) {
         super.setPrice(super.getPrice() - (super.getPrice() * ((discountPercentage * 1.0f) / 100)));
+        discounted = true;
     }
 
     @Override
@@ -79,8 +83,11 @@ public class AnimalProduct extends Item implements Discountable, Promotable, Per
 
     @Override
     public void handleExpiration() {
-        if (dateOfExpiration.isEqual(LocalDate.now().plusDays(3)) || dateOfExpiration.isBefore(LocalDate.now().plusDays(3))) {
+        if (dateOfExpiration.isEqual(LocalDate.now().plusDays(3)) || dateOfExpiration.isBefore(LocalDate.now().plusDays(3)) && !discounted) {
             applyDiscount(30);
+        } else if (dateOfExpiration.isAfter(LocalDate.now()) && discounted) {
+            discounted = false;
+            resetPrice();
         } else if (!promotions.isEmpty()) {
             boolean noPromo = true;
             for (Promotion promotion : promotions) {
@@ -88,9 +95,11 @@ public class AnimalProduct extends Item implements Discountable, Promotable, Per
                 promotion.endDate().isBefore(LocalDate.now())) {
                     noPromo = false;
                     participateInPromotion(promotion.promotion());
+                    discounted = true;
                 }
             }
             if (noPromo) {
+                discounted = false;
                 resetPrice();
             }
         }

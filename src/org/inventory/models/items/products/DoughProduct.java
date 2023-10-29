@@ -16,11 +16,12 @@ import java.util.List;
 public class DoughProduct extends Item implements Perishable, Promotable {
     private LocalDate dateOfExpiration;
     private final List<Promotion> promotions;
-
+    private boolean discounted = false;
     private float discount = 0.0f;
     public DoughProduct(DoughProduct otherDough) {
         super(otherDough);
         this.discount = otherDough.discount;
+        this.discounted = otherDough.discounted;
         this.dateOfExpiration = LocalDate.from(otherDough.dateOfExpiration);
         this.promotions = List.copyOf(otherDough.promotions);
     }
@@ -31,11 +32,12 @@ public class DoughProduct extends Item implements Perishable, Promotable {
     }
 
     @JsonCreator
-    public DoughProduct(@JsonProperty("id") long id, @JsonProperty("name") String name, @JsonProperty("price") float price, @JsonProperty("quantity") float quantity, @JsonProperty("dateOfExpiration") LocalDate dateOfExpiration, @JsonProperty("promotions") List<Promotion> promotions, @JsonProperty("discount") float discount) {
+    public DoughProduct(@JsonProperty("id") long id, @JsonProperty("name") String name, @JsonProperty("price") float price, @JsonProperty("quantity") float quantity, @JsonProperty("dateOfExpiration") LocalDate dateOfExpiration, @JsonProperty("promotions") List<Promotion> promotions, @JsonProperty("discount") float discount, @JsonProperty("discounted") boolean discounted) {
         super(id, "Dough Product", name, price, quantity);
         this.dateOfExpiration = dateOfExpiration;
         this.promotions = promotions;
         this.discount = discount;
+        this.discounted = discounted;
     }
 
     public LocalDate getDateOfExpiration() {
@@ -58,9 +60,11 @@ public class DoughProduct extends Item implements Perishable, Promotable {
 
     @Override
     public void handleExpiration() {
-        if (dateOfExpiration.isEqual(LocalDate.now())) {
+        if (dateOfExpiration.isEqual(LocalDate.now()) && !this.discounted) {
             super.setQuantity((float)Math.floor(super.getQuantity() * 0.7f));
-        } else if (!promotions.isEmpty()) {
+        } else if (dateOfExpiration.isAfter(LocalDate.now()) && this.discounted) {
+            discounted = false;
+        } else if (!promotions.isEmpty() && !this.discounted) {
             boolean noPromo = true;
             for (Promotion promotion : promotions) {
                 if (promotion.startDate().isAfter(LocalDate.now()) || promotion.startDate().isEqual(LocalDate.now()) &&
@@ -71,6 +75,7 @@ public class DoughProduct extends Item implements Perishable, Promotable {
             }
             if (noPromo && discount > 0) {
                 super.setPrice((super.getPrice() / discount));
+                this.discounted = false;
             }
         }
     }
@@ -92,6 +97,7 @@ public class DoughProduct extends Item implements Perishable, Promotable {
             if (promotionName.equals(promotion.promotion())) {
                 newPrice *= promotion.discount();
                 this.discount = promotion.discount();
+                this.discounted = true;
                 break;
             }
         }

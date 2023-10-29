@@ -435,6 +435,7 @@ public class ViewItemsList {
             startDate = read.readDate();
             start = LocalDate.parse(startDate);
         }
+        System.out.println("Insert end date of promotion in format yyyy-mm-dd:");
         String endDate = read.readDate();
         LocalDate end = LocalDate.parse(endDate);
         while (end.isBefore(LocalDate.now()) ||

@@ -57,6 +57,7 @@ public class AnimalProduct extends Item implements Discountable, Promotable, Per
         return dateOfExpiration;
     }
 
+    @Override
     public List<Promotion> getPromotions() {
         return promotions;
     }

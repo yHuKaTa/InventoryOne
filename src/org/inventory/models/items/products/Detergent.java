@@ -40,6 +40,7 @@ public class Detergent extends Item implements Breakable, Promotable {
         this.promotions = promotions;
     }
 
+    @Override
     public List<Promotion> getPromotions() {
         return promotions;
     }

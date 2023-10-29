@@ -46,6 +46,7 @@ public class DoughProduct extends Item implements Perishable, Promotable {
         return dateOfExpiration;
     }
 
+    @Override
     public List<Promotion> getPromotions() {
         return promotions;
     }

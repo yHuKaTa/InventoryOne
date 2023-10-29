@@ -3,6 +3,8 @@ package org.inventory.ui;
 import org.inventory.data.inventoryone.InventoryOne;
 import org.inventory.models.items.Item;
 import org.inventory.models.items.Promotion;
+import org.inventory.models.items.appearances.Breakable;
+import org.inventory.models.items.appearances.Promotable;
 import org.inventory.models.items.products.AnimalProduct;
 import org.inventory.models.items.products.Detergent;
 import org.inventory.models.items.products.DoughProduct;
@@ -305,11 +307,11 @@ public class ViewItemsList {
                     boolean isFound = false;
                     long breakage = read.readLong();
                     for (Item item : inventory.getItems()) {
-                        if (item instanceof Detergent && item.getId() == breakage) {
+                        if (item instanceof Breakable && item.getId() == breakage) {
                             isFound = true;
                             System.out.println("Insert quantity of broken items:");
                             int quantity = read.readInteger();
-                            ((Detergent) item).handleBreakage(quantity);
+                            ((Breakable) item).handleBreakage(quantity);
                             inventory.updateItems();
                             MainMenu.getMain();
                             return;
@@ -323,88 +325,34 @@ public class ViewItemsList {
                     System.out.println("Insert item ID to review promotions campaigns");
                     int num = 1;
                     for (Item item : inventory.getItems()) {
-                        if (item instanceof AnimalProduct) {
-                            System.out.printf("%d) %s type: %s ID: %d\n", num, item.getName(), item.getCategory(), item.getId());
-                        } else if (item instanceof Detergent) {
-                            System.out.printf("%d) %s type: %s ID: %d\n", num, item.getName(), item.getCategory(), item.getId());
-                        } else if (item instanceof DoughProduct) {
+                        if (item instanceof Promotable) {
                             System.out.printf("%d) %s type: %s ID: %d\n", num, item.getName(), item.getCategory(), item.getId());
                         }
                         num++;
                     }
                     long productId = read.readLong();
-                    boolean isFound = false;
                     for (Item item : inventory.getItems()) {
                         if (item.getId() == productId) {
-                            isFound = true;
-                            switch (item) {
-                                case AnimalProduct animalProduct -> {
-                                    if (animalProduct.getPromotions().isEmpty()) {
-                                        System.out.println("There aren't promotion campaigns!");
-                                        System.out.println("To add new insert 1");
-                                        System.out.println("To exit insert every else digit");
-                                    } else {
-                                        num = 1;
-                                        for (Promotion promotion : animalProduct.getPromotions()) {
-                                            System.out.printf("%d) %s - start date : %s end date: %s discount: %f\n", num, promotion.promotion(), promotion.startDate().toString(), promotion.endDate().toString(), promotion.discount());
-                                            num++;
-                                        }
-                                        System.out.println("To add new promotion insert 1");
-                                        System.out.println("To exit insert every else");
+                            if (item instanceof Promotable) {
+                                if (((Promotable) item).getPromotions().isEmpty()) {
+                                    System.out.println("There aren't promotion campaigns!");
+                                    System.out.println("To add new insert 1");
+                                    System.out.println("To exit insert every else digit");
+                                } else {
+                                    num = 1;
+                                    for (Promotion promotion : ((Promotable) item).getPromotions()) {
+                                        System.out.printf("%d) %s - start date : %s end date: %s discount: %f\n", num, promotion.promotion(), promotion.startDate().toString(), promotion.endDate().toString(), promotion.discount());
+                                        num++;
                                     }
-                                    choice = read.readInteger();
-                                    if (choice == 1) {
-                                        addPromotion(animalProduct);
-                                    }
-                                    getItems();
-                                    return;
+                                    System.out.println("To add new promotion insert 1");
+                                    System.out.println("To exit insert every else");
                                 }
-                                case Detergent detergent -> {
-                                    if (detergent.getPromotions().isEmpty()) {
-                                        System.out.println("There aren't promotion campaigns!");
-                                        System.out.println("To add new insert 1");
-                                        System.out.println("To exit insert every else digit");
-                                    } else {
-                                        num = 1;
-                                        for (Promotion promotion : detergent.getPromotions()) {
-                                            System.out.printf("%d) %s - start date : %s end date: %s discount: %f\n", num, promotion.promotion(), promotion.startDate().toString(), promotion.endDate().toString(), promotion.discount());
-                                            num++;
-                                        }
-                                        System.out.println("To add new promotion insert 1");
-                                        System.out.println("To exit insert every else");
-                                    }
-                                    choice = read.readInteger();
-                                    if (choice == 1) {
-                                        addPromotion(detergent);
-                                    }
-                                    getItems();
-                                    return;
+                                choice = read.readInteger();
+                                if (choice == 1) {
+                                    addPromotion(item);
                                 }
-                                case DoughProduct doughProduct -> {
-                                    if (doughProduct.getPromotions().isEmpty()) {
-                                        System.out.println("There aren't promotion campaigns!");
-                                        System.out.println("To add new insert 1");
-                                        System.out.println("To exit insert every else digit");
-                                    } else {
-                                        num = 1;
-                                        for (Promotion promotion : doughProduct.getPromotions()) {
-                                            System.out.printf("%d) %s - start date : %s end date: %s discount: %f\n", num, promotion.promotion(), promotion.startDate().toString(), promotion.endDate().toString(), promotion.discount());
-                                            num++;
-                                        }
-                                        System.out.println("To add new promotion insert 1");
-                                        System.out.println("To exit insert every else");
-                                    }
-                                    choice = read.readInteger();
-                                    if (choice == 1) {
-                                        addPromotion(doughProduct);
-                                    }
-                                    getItems();
-                                    return;
-                                }
-                                default -> {
-                                    getItems();
-                                    return;
-                                }
+                                getItems();
+                                return;
                             }
                         }
                     }

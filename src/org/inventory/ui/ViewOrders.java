@@ -5,6 +5,7 @@ import org.inventory.models.items.Item;
 import org.inventory.models.orders.Order;
 import org.inventory.models.orders.Status;
 import org.inventory.models.users.User;
+import org.inventory.util.PaymentChecker;
 import org.inventory.util.ReadFromConsole;
 
 import java.util.Objects;
@@ -60,17 +61,19 @@ public class ViewOrders {
                                 System.out.println("Can not checkout order with provided ID! This order is canceled.");
                                 break;
                             }
-                            // We can implement pay service here
-                            for (Order history : inventory.getHistory().get(user.getUuid())) {
-                                if (history.getId().equals(order.getId())) {
-                                    history.changeStatus(Status.FINISHED);
-                                    break;
+                            // I use PayPal REST API to implement payment method
+                            if (PaymentChecker.isSuccessful(String.valueOf(order.getTotalPrice()))) {
+                                for (Order history : inventory.getHistory().get(user.getUuid())) {
+                                    if (history.getId().equals(order.getId())) {
+                                        history.changeStatus(Status.FINISHED);
+                                        break;
+                                    }
                                 }
+                                order.changeStatus(Status.FINISHED);
+                                System.out.println("Your order have been successfully finished!");
+                                inventory.updateUsers();
+                                inventory.updateHistory();
                             }
-                            order.changeStatus(Status.FINISHED);
-                            System.out.println("Your order have been successfully finished!");
-                            inventory.updateUsers();
-                            inventory.updateHistory();
                             break;
                         }
                     }

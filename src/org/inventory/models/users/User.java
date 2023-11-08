@@ -88,6 +88,7 @@ public abstract class User {
     void changeType(String type) {
         this.type = type;
     }
+
     public void addToCart(Item item) {
         cart.items().add(item);
     }

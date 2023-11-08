@@ -16,7 +16,7 @@ public class Order {
 
     @JsonCreator
     public Order(@JsonProperty("id") String id, @JsonProperty("date") LocalDateTime date, @JsonProperty("items") List<Item> items, @JsonProperty("status") Status status) {
-        this.id  = id;
+        this.id = id;
         this.date = date;
         this.items = items;
         this.status = status;

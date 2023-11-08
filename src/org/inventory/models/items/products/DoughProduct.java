@@ -18,6 +18,7 @@ public class DoughProduct extends Item implements Perishable, Promotable {
     private final List<Promotion> promotions;
     private boolean discounted;
     private float discount;
+
     public DoughProduct(DoughProduct otherDough) {
         super(otherDough);
         this.discount = otherDough.discount;
@@ -64,7 +65,7 @@ public class DoughProduct extends Item implements Perishable, Promotable {
     @Override
     public void handleExpiration() {
         if (dateOfExpiration.isEqual(LocalDate.now()) && !this.discounted) {
-            super.setQuantity((float)Math.floor(super.getQuantity() * 0.7f));
+            super.setQuantity((float) Math.floor(super.getQuantity() * 0.7f));
         } else if (dateOfExpiration.isAfter(LocalDate.now()) && this.discounted) {
             discounted = false;
         } else if (!promotions.isEmpty() && !this.discounted) {
@@ -85,7 +86,7 @@ public class DoughProduct extends Item implements Perishable, Promotable {
 
     @Override
     public void participateInPromotion(String promotionName) {
-                super.setPrice(getPromotionalPrice(promotionName));
+        super.setPrice(getPromotionalPrice(promotionName));
     }
 
     @Override

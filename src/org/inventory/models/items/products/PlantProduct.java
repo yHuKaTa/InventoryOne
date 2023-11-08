@@ -21,6 +21,7 @@ public class PlantProduct extends Item implements Perishable, Discountable {
         this.discount = otherProduct.discount;
         this.discounted = otherProduct.discounted;
     }
+
     public PlantProduct(String name, float price, float quantity, LocalDate dateOfExpiration) {
         super("Plant Product", name, price, quantity);
         this.dateOfExpiration = dateOfExpiration;

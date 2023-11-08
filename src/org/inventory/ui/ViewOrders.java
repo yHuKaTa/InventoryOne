@@ -46,7 +46,7 @@ public class ViewOrders {
             System.out.println("To return to main menu insert other else");
             int choice = read.readInteger();
             switch (choice) {
-                case 1 : {
+                case 1: {
                     System.out.println("Provide order ID:");
                     String id = read.readString();
                     boolean notFound = true;
@@ -83,7 +83,7 @@ public class ViewOrders {
                     MainMenu.getMain();
                     break;
                 }
-                case 2 : {
+                case 2: {
                     System.out.println("Provide order ID:");
                     String id = read.readString();
                     boolean notFound = true;

@@ -67,36 +67,36 @@ public class BuyMenu {
                         }
                     }
                     for (Item item : inventory.getItems()) {
-                            if (item.getId() == Long.parseLong(wish) && Objects.isNull(cartItem)) {
-                                wished = ProductFactory.generate(item);
-                                System.out.println("Insert quantity:");
-                                float qty = (float) read.readDouble();
-                                while (qty > item.getQuantity()) {
-                                    System.out.printf("Insufficient quantity! Maximum quantity is %f\n", item.getQuantity());
-                                    qty = (float) read.readDouble();
-                                }
-                                if (item.getQuantity() <= 0) {
-                                    getItems();
-                                    return;
-                                } else {
-                                    wished.setQuantity(qty);
-                                    break;
-                                }
-                            } else if (item.getId() == Long.parseLong(wish) && Objects.nonNull(cartItem)) {
-                                System.out.println("Insert quantity:");
-                                float qty = (float) read.readDouble();
-                                while (qty > item.getQuantity() - cartItem.getQuantity()) {
-                                    System.out.printf("Insufficient quantity! Maximum quantity is %f\n", item.getQuantity() - cartItem.getQuantity());
-                                    qty = (float) read.readDouble();
-                                    if (qty <= 0) {
-                                        getItems();
-                                        return;
-                                    }
-                                }
-                                cartItem.setQuantity(cartItem.getQuantity() + qty);
+                        if (item.getId() == Long.parseLong(wish) && Objects.isNull(cartItem)) {
+                            wished = ProductFactory.generate(item);
+                            System.out.println("Insert quantity:");
+                            float qty = (float) read.readDouble();
+                            while (qty > item.getQuantity()) {
+                                System.out.printf("Insufficient quantity! Maximum quantity is %f\n", item.getQuantity());
+                                qty = (float) read.readDouble();
+                            }
+                            if (item.getQuantity() <= 0) {
                                 getItems();
                                 return;
+                            } else {
+                                wished.setQuantity(qty);
+                                break;
                             }
+                        } else if (item.getId() == Long.parseLong(wish) && Objects.nonNull(cartItem)) {
+                            System.out.println("Insert quantity:");
+                            float qty = (float) read.readDouble();
+                            while (qty > item.getQuantity() - cartItem.getQuantity()) {
+                                System.out.printf("Insufficient quantity! Maximum quantity is %f\n", item.getQuantity() - cartItem.getQuantity());
+                                qty = (float) read.readDouble();
+                                if (qty <= 0) {
+                                    getItems();
+                                    return;
+                                }
+                            }
+                            cartItem.setQuantity(cartItem.getQuantity() + qty);
+                            getItems();
+                            return;
+                        }
                     }
                     if (Objects.isNull(wished)) {
                         System.out.println("Please provide valid item ID or exit buy menu with sentence \"exit\".");

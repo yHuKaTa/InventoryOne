@@ -35,7 +35,7 @@ public abstract class Item implements Sellable, Categorizable {
 
     public Item(String category, String name, float price, float quantity) {
         Random random = new Random();
-        this.id = random.nextLong(1,Long.MAX_VALUE);
+        this.id = random.nextLong(1, Long.MAX_VALUE);
         this.category = category;
         this.name = name;
         this.price = price;

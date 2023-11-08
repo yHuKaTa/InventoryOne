@@ -13,6 +13,15 @@ import org.inventory.models.users.User;
 
 import java.util.*;
 
+/**
+ * This singleton class is responsible for DB information from files.
+ * Information for the API are read from files by call of methods starts with "import".
+ * When information is changed, API will call methods starts with "update" to update information by replacing old one.
+ * All we need is proper file location. File locator is in methods for storing and reading information.
+ * To serialize objects attributes API use custom Serializer with help of Jackson's Object mapper.
+ * <p>
+ * In this API will storage lists of items and users. To generate history of orders API will storage Map of List of orders for current user ID.
+ */
 public class InventoryOne {
     private static InventoryOne inventory;
     private final List<Item> items;
@@ -22,6 +31,7 @@ public class InventoryOne {
     private final Serializer<List<Item>> itemSerializer = new Serializer<>();
     private final Serializer<List<User>> userSerializer = new Serializer<>();
     private final Serializer<Map<String, List<Order>>> historySerializer = new Serializer<>();
+
     private InventoryOne() {
         items = importItems();
         handleExpiration();
@@ -61,7 +71,8 @@ public class InventoryOne {
     }
 
     private List<Item> importItems() {
-        TypeReference<List<Item>> typeReference = new TypeReference<>() {};
+        TypeReference<List<Item>> typeReference = new TypeReference<>() {
+        };
         List<Item> temp = itemSerializer.readFromJsonFile("src/org/inventory/data/items.json", typeReference);
         if (Objects.isNull(temp)) {
             temp = new ArrayList<>();
@@ -70,7 +81,8 @@ public class InventoryOne {
     }
 
     private List<User> importUsers() {
-        TypeReference<List<User>> typeReference = new TypeReference<>() {};
+        TypeReference<List<User>> typeReference = new TypeReference<>() {
+        };
         List<User> temp = userSerializer.readFromJsonFile("src/org/inventory/data/users.json", typeReference);
         if (Objects.isNull(temp)) {
             Encoder encoder = Encoder.getInstance();
@@ -81,7 +93,8 @@ public class InventoryOne {
     }
 
     private Map<String, List<Order>> importHistory() {
-        TypeReference<Map<String, List<Order>>> typeReference = new TypeReference<>() {};
+        TypeReference<Map<String, List<Order>>> typeReference = new TypeReference<>() {
+        };
         Map<String, List<Order>> temp = historySerializer.readFromJsonFile("src/org/inventory/data/history.json", typeReference);
         if (Objects.isNull(temp)) {
             temp = new LinkedHashMap<>();

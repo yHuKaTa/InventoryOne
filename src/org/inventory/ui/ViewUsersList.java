@@ -192,7 +192,7 @@ public class ViewUsersList {
                     System.out.println("To exit insert every other digit");
                     choice = read.readInteger();
                     switch (choice) {
-                        case 1 : {
+                        case 1: {
                             boolean noDiscount = true;
                             int numItem = 1;
                             for (Item item : order.getItems()) {
@@ -212,7 +212,7 @@ public class ViewUsersList {
                             }
                             break;
                         }
-                        case 2 : {
+                        case 2: {
                             if (order.getStatus().equals(Status.ACTIVE) || order.getStatus().equals(Status.CANCELED)) {
                                 order.changeStatus(Status.CANCELED);
                             } else {
@@ -220,7 +220,7 @@ public class ViewUsersList {
                             }
                             break;
                         }
-                        case 3 : {
+                        case 3: {
                             if (order.getStatus().equals(Status.ACTIVE) || order.getStatus().equals(Status.FINISHED)) {
                                 order.changeStatus(Status.FINISHED);
                             } else {
@@ -228,7 +228,7 @@ public class ViewUsersList {
                             }
                             break;
                         }
-                        default : {
+                        default: {
                             return;
                         }
                     }

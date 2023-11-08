@@ -9,7 +9,7 @@ import org.inventory.models.orders.Order;
 import java.util.List;
 
 @JsonTypeName("Customer")
-public class Customer extends User{
+public class Customer extends User {
     public Customer(String userName, String password, String phoneNumber) {
         super(userName, "Customer", password, phoneNumber);
     }

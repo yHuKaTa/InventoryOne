@@ -100,7 +100,7 @@ public class AnimalProduct extends Item implements Discountable, Promotable, Per
             boolean noPromo = true;
             for (Promotion promotion : promotions) {
                 if (promotion.startDate().isAfter(LocalDate.now()) || promotion.startDate().isEqual(LocalDate.now()) &&
-                promotion.endDate().isBefore(LocalDate.now())) {
+                        promotion.endDate().isBefore(LocalDate.now())) {
                     noPromo = false;
                     participateInPromotion(promotion.promotion());
                     discounted = true;

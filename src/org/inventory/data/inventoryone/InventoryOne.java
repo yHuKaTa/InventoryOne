@@ -73,7 +73,7 @@ public class InventoryOne {
     private List<Item> importItems() {
         TypeReference<List<Item>> typeReference = new TypeReference<>() {
         };
-        List<Item> temp = itemSerializer.readFromJsonFile("src/org/inventory/data/items.json", typeReference);
+        List<Item> temp = itemSerializer.readFromJsonFile("src/resources/items.json", typeReference);
         if (Objects.isNull(temp)) {
             temp = new ArrayList<>();
         }
@@ -83,7 +83,7 @@ public class InventoryOne {
     private List<User> importUsers() {
         TypeReference<List<User>> typeReference = new TypeReference<>() {
         };
-        List<User> temp = userSerializer.readFromJsonFile("src/org/inventory/data/users.json", typeReference);
+        List<User> temp = userSerializer.readFromJsonFile("src/resources/users.json", typeReference);
         if (Objects.isNull(temp)) {
             Encoder encoder = Encoder.getInstance();
             temp = new ArrayList<>();
@@ -95,7 +95,7 @@ public class InventoryOne {
     private Map<String, List<Order>> importHistory() {
         TypeReference<Map<String, List<Order>>> typeReference = new TypeReference<>() {
         };
-        Map<String, List<Order>> temp = historySerializer.readFromJsonFile("src/org/inventory/data/history.json", typeReference);
+        Map<String, List<Order>> temp = historySerializer.readFromJsonFile("src/resources/history.json", typeReference);
         if (Objects.isNull(temp)) {
             temp = new LinkedHashMap<>();
         }
@@ -103,14 +103,14 @@ public class InventoryOne {
     }
 
     public void updateItems() {
-        itemSerializer.writeToJsonFile("src/org/inventory/data/items.json", items);
+        itemSerializer.writeToJsonFile("src/resources/items.json", items);
     }
 
     public void updateUsers() {
-        userSerializer.writeToJsonFile("src/org/inventory/data/users.json", users);
+        userSerializer.writeToJsonFile("src/resources/users.json", users);
     }
 
     public void updateHistory() {
-        historySerializer.writeToJsonFile("src/org/inventory/data/history.json", history);
+        historySerializer.writeToJsonFile("src/resources/history.json", history);
     }
 }
